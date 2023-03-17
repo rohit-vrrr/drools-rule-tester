@@ -1,0 +1,116 @@
+@import 'src/assets/scss/variables';
+
+.sideBarItems {
+    padding: 5px 20px;
+    font-weight: normal;
+    &:hover {
+        background-color: $grey-highlight;
+        cursor: pointer;
+    }
+}
+
+.dashboard {
+    height: auto;
+    color: $white;
+    margin: 50px;
+
+    .bg-img {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: $light-blue;
+        z-index: -1000;
+    }
+
+    .heading {
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: $black;
+    }
+
+    .dashboard-container {
+        display: flex;
+        flex-direction: row;
+
+        .left-div {
+            display: flex;
+            flex: 0.3;
+            flex-direction: column;
+            justify-content: flex-start;
+            width: 400px;
+
+            .process-dropdown {
+                margin-top: 15px;
+            }
+
+            .form {
+                .form-fields {
+                    margin: 15px 0;
+                    input {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+        .right-div {
+            display: flex;
+            flex: 0.7;
+            .process-definition-diagram {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                background-color: $white;
+                border-radius: 6px;
+                margin: 0 50px;
+                position: relative;
+                .diagram-heading {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    color: $black;
+                    margin: 15px;
+                }
+                .no-diagram {
+                    color: $black;
+                }
+                .svg {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    .accordion-container {
+        margin: 50px 0;
+        .process-instance-diagram {
+            width: 100%;
+            height: auto;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 0 20px 0;
+            background: $grey-background;
+            font-weight: 700;
+            position: relative;
+            .diagram-heading {
+                position: absolute;
+                top: 0;
+                left: 0;
+                color: $black;
+                margin: 15px;
+            }
+            .svg {
+                width: 100%;
+                color: $grey-background;
+            }
+        }
+    }
+}

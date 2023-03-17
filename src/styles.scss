@@ -1,0 +1,26 @@
+body {
+    margin: 0 !important;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+// primeNG Menubar
+.p-menubar {
+    margin-bottom: 50px !important;
+    border-radius: 0 !important;
+}
+
+// primeng Sidebar
+.p-component-overlay {
+    display: none !important;
+}
+.p-sidebar .p-sidebar-content {
+    padding: 0 !important;
+}
+.p-sidebar-left {
+    width: 15rem !important;
+}
+
+// primeng Password Input
+.p-password {
+    width: 100% !important;
+}

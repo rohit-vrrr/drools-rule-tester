@@ -1,0 +1,118 @@
+<p-menubar [model]="menuItems">
+  <div>
+      <button
+        pButton
+        type="button"
+        label="Logout"
+        icon="pi pi-power-off"
+        style="margin-left:.25em"
+        [routerLink]="'/'"
+      ></button>
+  </div>
+</p-menubar>
+
+<p-sidebar [(visible)]="visibleSidebar" [baseZIndex]="10000">
+  <h2 class="sideBarItems" [routerLink]="'/dashboard'">Process</h2>
+</p-sidebar>
+
+<div class="dashboard">
+  <div class="bg-img"></div>
+  <p class="heading">Process</p>
+  <div class="dashboard-container">
+
+    <div class="left-div">
+      <p-dropdown
+        [options]="kieContainers"
+        [(ngModel)]="selectedContainer"
+        placeholder="Select Container ID"
+        optionLabel="container-id"
+        [showClear]="true"
+        (onChange)="onContainerIdChange()">
+      </p-dropdown>
+
+      <div class="process-dropdown">
+        <p-dropdown
+          [options]="allProcesses"
+          [(ngModel)]="selectedProcess"
+          placeholder="Select Process ID"
+          optionLabel="process-id"
+          [showClear]="true"
+          (onChange)="onProcessIdChange()">
+        </p-dropdown>
+      </div>
+
+      <div class="form">
+        <div class="form-fields">
+          <span class="p-inputgroup">
+            <input type="text" pInputText placeholder="From" [(ngModel)]="from" [disabled]="disabled" />
+          </span>
+        </div>
+
+        <div class="form-fields">
+          <span class="p-inputgroup">
+            <input type="text" pInputText placeholder="To" [(ngModel)]="to" [disabled]="disabled" />
+          </span>
+        </div>
+
+        <div class="form-fields">
+          <span class="p-inputgroup">
+            <input type="text" pInputText placeholder="Type" [(ngModel)]="type" [disabled]="disabled" />
+          </span>
+        </div>
+      </div>
+      <button
+          pButton
+          pRipple
+          type="button"
+          label="Submit"
+          class="p-button-raised"
+          (click)="handleSubmit()"
+          [disabled]="disabled"
+      ></button>
+    </div>
+
+    <div class="right-div">
+      <div class="process-definition-diagram">
+        <div class="diagram-heading">Process Definition Diagram:</div>
+        <div class="no-diagram" *ngIf="!processDefinitionSvg">Select Process ID</div>
+        <div class="svg" *ngIf="processDefinitionSvg" [innerHTML]="processDefinitionSvg | safeHtml"></div>
+      </div>
+    </div>
+  </div>
+
+  <p-messages [(value)]="msg" [enableService]="false"></p-messages>
+
+  <div class="accordion-container">
+    <p-accordion>
+      <p-accordionTab header="Process Details" [selected]="false">
+        <div class="process-instance-diagram">
+          <div class="diagram-heading">Process Instance Diagram:</div>
+          <div class="svg" *ngIf="processInstanceSvg" [innerHTML]="processInstanceSvg | safeHtml"></div>
+        </div>
+        <p-table [value]="processHistory" styleClass="p-datatable-gridlines">
+          <ng-template pTemplate="caption">
+            Process Instance ID: {{processHistory[0]?.processInstanceId}}
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>From</th>
+              <th>To</th>
+              <th>Type</th>
+              <th>Is Valid</th>
+              <th>Final Result</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-history>
+            <tr>
+              <td>{{history.From}}</td>
+              <td>{{history.To}}</td>
+              <td>{{history.Type}}</td>
+              <td>{{history.isValid ? history.isValid : "NULL"}}</td>
+              <td>{{history.finalResult}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-accordionTab>
+    </p-accordion>
+  </div>
+</div>

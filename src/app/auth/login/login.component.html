@@ -1,0 +1,41 @@
+<div class="login">
+    <div class="bg-img"></div>
+    <div class="login-container">
+        <p class="heading">Drools Rule Tester</p>
+
+        <div class="form">
+            <div class="form-fields">
+              <span class="p-inputgroup">
+                <input
+                  type="text"
+                  pInputText
+                  placeholder="Username"
+                  [(ngModel)]="username"
+                  [ngClass]="isInvalidUsername ? 'ng-invalid ng-dirty' : ''"
+                />
+              </span>
+            </div>
+
+            <div class="form-fields">
+              <span class="p-inputgroup">
+                <p-password
+                  placeholder="Password"
+                  [(ngModel)]="password"
+                  [toggleMask]="true"
+                  [feedback]="false"
+                  [ngClass]="isInvalidPassword ? 'ng-invalid ng-dirty' : ''"
+                ></p-password>
+              </span>
+            </div>
+        </div>
+
+        <button
+            pButton
+            pRipple
+            type="button"
+            label="Login"
+            class="p-button-raised"
+            (click)="handleLogin()"
+        ></button>
+    </div>
+</div>
