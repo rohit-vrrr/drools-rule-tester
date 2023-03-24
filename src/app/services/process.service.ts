@@ -12,6 +12,14 @@ export class ProcessService {
     this.headers = new HttpHeaders({'Authorization': "Basic YWRtaW46YWRtaW4="});
   }
 
+  retrieveProcessVariables(containerId: string, processId: string) {
+    return this.http.get(
+      environment.baseURL + '/server/containers/' + containerId +
+      '/processes/definitions/' + processId + '/variables',
+      { headers: this.headers, observe: 'response' }
+    );
+  }
+
   listAllProcesses(containerId: any) {
     return this.http.get(
       environment.baseURL + '/server/queries/cases/' + containerId + '/processes',

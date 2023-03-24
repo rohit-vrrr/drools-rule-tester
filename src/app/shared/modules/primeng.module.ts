@@ -11,6 +11,7 @@ import { MessageModule } from 'primeng/message';
 import { PasswordModule } from "primeng/password";
 import { RippleModule } from 'primeng/ripple';
 import { SidebarModule } from 'primeng/sidebar';
+import { SkeletonModule } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 
 @NgModule({
@@ -26,6 +27,7 @@ import { TableModule } from 'primeng/table';
     PasswordModule,
     RippleModule,
     SidebarModule,
+    SkeletonModule,
     TableModule
   ]
 })

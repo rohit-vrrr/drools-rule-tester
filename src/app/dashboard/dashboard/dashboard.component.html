@@ -41,33 +41,27 @@
         </p-dropdown>
       </div>
 
-      <div class="form">
-        <div class="form-fields">
-          <span class="p-inputgroup">
-            <input type="text" pInputText placeholder="From" [(ngModel)]="from" [disabled]="disabled" />
-          </span>
-        </div>
+      <div class="form-skeleton" *ngIf="disabled">
+        <div class="skeleton"> <p-skeleton height="2.5rem" styleClass="mb-2"></p-skeleton> </div>
+        <div class="skeleton"> <p-skeleton width="20rem" height="2.5rem" styleClass="mb-2"></p-skeleton> </div>
+        <div class="skeleton"> <p-skeleton width="15rem" styleClass="mb-2"></p-skeleton> </div>
+      </div>
 
+      <div *ngFor="let variables of processVariablesJSON" class="form">
         <div class="form-fields">
           <span class="p-inputgroup">
-            <input type="text" pInputText placeholder="To" [(ngModel)]="to" [disabled]="disabled" />
-          </span>
-        </div>
-
-        <div class="form-fields">
-          <span class="p-inputgroup">
-            <input type="text" pInputText placeholder="Type" [(ngModel)]="type" [disabled]="disabled" />
+            <input name={{variables.name}} type="text" pInputText placeholder={{variables.label}} value={{variables.value}} (change)="dynamicFormOnChange($event)"/>
           </span>
         </div>
       </div>
       <button
-          pButton
-          pRipple
-          type="button"
-          label="Submit"
-          class="p-button-raised"
-          (click)="handleSubmit()"
-          [disabled]="disabled"
+        pButton
+        pRipple
+        type="button"
+        label="Submit"
+        class="p-button-raised"
+        (click)="dynamicFormSubmit()"
+        [disabled]="disabled"
       ></button>
     </div>
 
@@ -89,26 +83,18 @@
           <div class="diagram-heading">Process Instance Diagram:</div>
           <div class="svg" *ngIf="processInstanceSvg" [innerHTML]="processInstanceSvg | safeHtml"></div>
         </div>
-        <p-table [value]="processHistory" styleClass="p-datatable-gridlines">
+        <p-table [value]="[{}]" styleClass="p-datatable-gridlines">
           <ng-template pTemplate="caption">
-            Process Instance ID: {{processHistory[0]?.processInstanceId}}
+            Process Instance ID: {{processInstanceId}}
           </ng-template>
           <ng-template pTemplate="header">
             <tr>
-              <th>From</th>
-              <th>To</th>
-              <th>Type</th>
-              <th>Is Valid</th>
-              <th>Final Result</th>
+              <th *ngFor="let key of processHistoryKeys">{{startCase(key)}}</th>
             </tr>
           </ng-template>
-          <ng-template pTemplate="body" let-history>
+          <ng-template pTemplate="body">
             <tr>
-              <td>{{history.From}}</td>
-              <td>{{history.To}}</td>
-              <td>{{history.Type}}</td>
-              <td>{{history.isValid ? history.isValid : "NULL"}}</td>
-              <td>{{history.finalResult}}</td>
+              <td *ngFor="let value of processHistoryValues">{{value}}</td>
             </tr>
           </ng-template>
         </p-table>
