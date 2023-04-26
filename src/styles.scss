@@ -23,4 +23,7 @@ body {
 // primeng Password Input
 .p-password {
     width: 100% !important;
+    i {
+        z-index: 1;
+    }
 }

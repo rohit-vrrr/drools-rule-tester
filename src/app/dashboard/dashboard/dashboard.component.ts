@@ -8,6 +8,9 @@ import { ContainerService } from 'src/app/services/container.service';
 import { ProcessService } from 'src/app/services/process.service';
 import { ProcessImagesService } from 'src/app/services/processImages.service';
 
+import { camelCase } from 'lodash';
+import { startCase } from 'lodash';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -20,16 +23,18 @@ export class DashboardComponent {
   selectedContainer: any;
   allProcesses: any = undefined;
   selectedProcess: any;
-  from: any;
-  to: any;
-  type: any;
   disabled: boolean = true;
+  processVariablesJSON: any[] = [];
   processInstanceId: any = undefined;
-  processHistory: any[] = [];
+  processHistory: any = {};
+  processHistoryKeys: any[] = [];
+  processHistoryValues: any[] = [];
   msg: Message[];
 
   processDefinitionSvg: any;
   processInstanceSvg: any;
+
+  startCase = startCase;
 
   constructor(
     private primengConfig: PrimeNGConfig,
@@ -48,10 +53,6 @@ export class DashboardComponent {
         console.log(err);
       }
     });
-
-    if(this.selectedContainer && this.selectedProcess) {
-      console.log("Both Selected!!");
-    }
   }
 
   ngOnInit() {
@@ -74,9 +75,11 @@ export class DashboardComponent {
   onProcessIdChange() {
     if (this.selectedProcess != null && this.selectedProcess != undefined) {
       this.getProcessDefinitionDiagram();
+      this.getProcessVariables();
       this.disabled = false;
     } else {
       this.processDefinitionSvg = undefined;
+      this.processVariablesJSON = [];
       this.disabled = true;
     }
   }
@@ -126,12 +129,48 @@ export class DashboardComponent {
     });
   }
 
-  handleSubmit() {
+  getProcessVariables() {
+    this.processService.retrieveProcessVariables(
+      this.selectedContainer?.['container-id'],
+      this.selectedProcess?.['process-id'],
+    ).subscribe({
+      next: (res: any) => {
+        if (res.status === 200) {
+          this.renderprocessVariables(Object.keys(res.body?.variables));
+        }
+      },
+      error: (err) => {
+        this.showErrorMessage();
+      }
+    });
+  }
+
+  renderprocessVariables(varArr: any) {
+    varArr.forEach((v: any) => {
+      this.processVariablesJSON.push({
+        type: 'text',
+        name: camelCase(v),
+        label: startCase(v),
+        value: ''
+      });
+    });
+  }
+
+  dynamicFormOnChange(event: any) {
+    this.processVariablesJSON.forEach((v: any) => {
+      if (v.name === event.target.name) {
+        v.value = event.target.value;
+      }
+    });
+  }
+
+  dynamicFormSubmit() {
     this.clear();
     let reqBody: any = {};
-    reqBody.From = this.from;
-    reqBody.To = this.to;
-    reqBody.Type = this.type;
+    
+    this.processVariablesJSON.forEach((v: any) => {
+      reqBody[v.name] = v.value;
+    });
 
     this.processService.startNewProcessInstance(
       this.selectedContainer?.['container-id'],
@@ -154,7 +193,6 @@ export class DashboardComponent {
 
   getProcessHistory() {
     let history: any;
-    let obj: any = {};
     this.processService.getProcessHistory(
       this.selectedContainer?.['container-id'],
       this.processInstanceId
@@ -163,26 +201,11 @@ export class DashboardComponent {
         if (res.status === 200) {
           history = res.body?.['variable-instance'];
           history.forEach((val: any) => {
-            switch (val.name) {
-              case 'From':
-                obj.From = val.value;
-                break;
-              case 'To':
-                obj.To = val.value;
-                break;
-              case 'Type':
-                obj.Type = val.value;
-                break;
-              case 'isValid':
-                obj.isValid = val.value;
-                break;
-              case 'finalResult':
-                obj.processInstanceId = val?.['process-instance-id'];
-                obj.finalResult = val.value;
-                break;
-            }
+            this.processHistory[val.name] = val.value;
           });
-          this.processHistory.push(obj);
+
+          this.processHistoryKeys = Object.keys(this.processHistory);
+          this.processHistoryValues = Object.values(this.processHistory);
         }
       },
       error: (err) => {
@@ -209,7 +232,7 @@ export class DashboardComponent {
 
   clear() {
     this.processInstanceId = undefined;
-    this.processHistory = [];
+    this.processHistory = {};
     this.processInstanceSvg = undefined;
   }
 }
