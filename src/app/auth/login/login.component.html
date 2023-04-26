@@ -6,36 +6,41 @@
         <div class="form">
             <div class="form-fields">
               <span class="p-inputgroup">
-                <input
+                <hcm-input
                   type="text"
-                  pInputText
+                  [isRequired]="false"
                   placeholder="Username"
-                  [(ngModel)]="username"
-                  [ngClass]="isInvalidUsername ? 'ng-invalid ng-dirty' : ''"
-                />
+                  [isReadonly]="false"
+                  [disabled]="false"
+                  minWidthVal="288px"
+                  tooltipMessage=""
+                  (onBlur)="onUsernameBlur($event)"
+                ></hcm-input>
               </span>
             </div>
 
             <div class="form-fields">
               <span class="p-inputgroup">
-                <p-password
+                <hcm-input
+                  type="password"
+                  [isRequired]="false"
                   placeholder="Password"
-                  [(ngModel)]="password"
-                  [toggleMask]="true"
-                  [feedback]="false"
-                  [ngClass]="isInvalidPassword ? 'ng-invalid ng-dirty' : ''"
-                ></p-password>
+                  [isReadonly]="false"
+                  [disabled]="false"
+                  minWidthVal="288px"
+                  tooltipMessage=""
+                  (onBlur)="onPasswordBlur($event)"
+                ></hcm-input>
               </span>
             </div>
         </div>
 
-        <button
-            pButton
-            pRipple
-            type="button"
-            label="Login"
-            class="p-button-raised"
-            (click)="handleLogin()"
-        ></button>
+        <hcm-primary-btn
+          label="Login"
+          icon=""
+          type="button"
+          [disabled]="false"
+          (onClick)="handleLogin()"
+        ></hcm-primary-btn>
     </div>
 </div>

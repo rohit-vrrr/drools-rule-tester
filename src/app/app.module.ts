@@ -9,6 +9,8 @@ import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { SharedModule } from './shared/shared.module';
 
+import { HcmNgModule } from 'hcm-angular';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -17,7 +19,8 @@ import { SharedModule } from './shared/shared.module';
     AuthModule,
     DashboardModule,
     HttpClientModule,
-    SharedModule
+    SharedModule,
+    HcmNgModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -31,15 +31,24 @@ export class LoginComponent {
   }
 
   handleLogin() {
-    this.isInvalidUsername = false;
-    this.isInvalidPassword = false;
-    if (this.username != environment.username || this.password != environment.password) {
-      if (this.username != environment.username && this.password != environment.password) {
-        this.isInvalidUsername = true;
-        this.isInvalidPassword = true;
-      }
-      else if (this.username != environment.username) this.isInvalidUsername = true;
-      else this.isInvalidPassword = true;
-    } else this.router.navigate(['/dashboard']);
+    console.log(this.username, this.password);
+    // this.isInvalidUsername = false;
+    // this.isInvalidPassword = false;
+    // if (this.username != environment.username || this.password != environment.password) {
+    //   if (this.username != environment.username && this.password != environment.password) {
+    //     this.isInvalidUsername = true;
+    //     this.isInvalidPassword = true;
+    //   }
+    //   else if (this.username != environment.username) this.isInvalidUsername = true;
+    //   else this.isInvalidPassword = true;
+    // } else this.router.navigate(['/dashboard']);
+  }
+
+  onUsernameBlur(event: any) {
+    this.username = event;
+  }
+
+  onPasswordBlur(event: any) {
+    this.password = event;
   }
 }

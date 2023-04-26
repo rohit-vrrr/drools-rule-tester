@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { PrimengModule } from './modules/primeng.module';
+import { HcmNgModule } from 'hcm-angular';
 
 @NgModule({
   declarations: [],
@@ -14,12 +15,14 @@ import { PrimengModule } from './modules/primeng.module';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    PrimengModule
+    PrimengModule,
+    HcmNgModule
   ],
   exports: [
     FormsModule,
     ReactiveFormsModule,
-    PrimengModule
+    PrimengModule,
+    HcmNgModule
   ]
 })
 export class SharedModule {}
