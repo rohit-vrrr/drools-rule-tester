@@ -1,46 +1,50 @@
 <div class="login">
-    <div class="bg-img"></div>
-    <div class="login-container">
-        <p class="heading">Drools Rule Tester</p>
+  <div class="bg-img"></div>
+  <div class="login-container">
+    <p class="heading">Drools Rule Tester</p>
 
-        <div class="form">
-            <div class="form-fields">
-              <span class="p-inputgroup">
-                <hcm-input
-                  type="text"
-                  [isRequired]="false"
-                  placeholder="Username"
-                  [isReadonly]="false"
-                  [disabled]="false"
-                  minWidthVal="288px"
-                  tooltipMessage=""
-                  (onBlur)="onUsernameBlur($event)"
-                ></hcm-input>
-              </span>
-            </div>
+    <div class="form">
+      <div class="form-fields">
+        <span class="p-inputgroup">
+          <hcm-input
+            type="text"
+            [isRequired]="false"
+            placeholder="Username"
+            [isReadonly]="false"
+            [disabled]="false"
+            minWidthVal="288px"
+            tooltipMessage=""
+            (onBlur)="onUsernameBlur($event)"
+          ></hcm-input>
+        </span>
+      </div>
 
-            <div class="form-fields">
-              <span class="p-inputgroup">
-                <hcm-input
-                  type="password"
-                  [isRequired]="false"
-                  placeholder="Password"
-                  [isReadonly]="false"
-                  [disabled]="false"
-                  minWidthVal="288px"
-                  tooltipMessage=""
-                  (onBlur)="onPasswordBlur($event)"
-                ></hcm-input>
-              </span>
-            </div>
-        </div>
-
-        <hcm-primary-btn
-          label="Login"
-          icon=""
-          type="button"
-          [disabled]="false"
-          (onClick)="handleLogin()"
-        ></hcm-primary-btn>
+      <div class="form-fields">
+        <span class="p-inputgroup">
+          <hcm-input
+            type="password"
+            [isRequired]="false"
+            placeholder="Password"
+            [isReadonly]="false"
+            [disabled]="false"
+            minWidthVal="288px"
+            tooltipMessage=""
+            (onBlur)="onPasswordBlur($event)"
+          ></hcm-input>
+        </span>
+      </div>
     </div>
+
+    <div class="error-card" *ngIf="isInvalidUsername || isInvalidPassword">
+      <hcm-card header="Invalid Username or Password" cardWidth=""></hcm-card>
+    </div>
+
+    <hcm-primary-btn
+      label="Login"
+      icon=""
+      type="button"
+      [disabled]="false"
+      (onClick)="handleLogin()"
+    ></hcm-primary-btn>
+  </div>
 </div>
