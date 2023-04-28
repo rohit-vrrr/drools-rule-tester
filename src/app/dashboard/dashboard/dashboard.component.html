@@ -41,28 +41,45 @@
         </p-dropdown>
       </div>
 
-      <div class="form-skeleton" *ngIf="disabled">
+      <div class="form-skeleton" *ngIf="disabled; else showFormFields">
         <div class="skeleton"> <p-skeleton height="2.5rem" styleClass="mb-2"></p-skeleton> </div>
         <div class="skeleton"> <p-skeleton width="20rem" height="2.5rem" styleClass="mb-2"></p-skeleton> </div>
         <div class="skeleton"> <p-skeleton width="15rem" styleClass="mb-2"></p-skeleton> </div>
       </div>
 
-      <div *ngFor="let variables of processVariablesJSON" class="form">
-        <div class="form-fields">
-          <span class="p-inputgroup">
-            <input name={{variables.name}} type="text" pInputText placeholder={{variables.label}} value={{variables.value}} (change)="dynamicFormOnChange($event)"/>
-          </span>
+      <ng-template #showFormFields>
+        <div class="form">
+          <div class="form-fields">
+            <form [formGroup]="form">
+              <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form"></formly-form>
+              <div class="btn-container">
+                <hcm-primary-btn
+                  label="Submit"
+                  icon=""
+                  type="submit"
+                  [disabled]="false"
+                  (onClick)="formSubmit()"
+                ></hcm-primary-btn>
+                <hcm-secondary-btn
+                  label="Reset"
+                  icon=""
+                  type="reset"
+                  [disabled]="false"
+                  (onClick)="form.reset()"
+                ></hcm-secondary-btn>
+              </div>
+            </form>
+          </div>
         </div>
+      </ng-template>
+
+      <!-- NO DISPLAY -->
+      <div *ngFor="let field of fields" class="form-display-none">
+        <form [formGroup]="form" (ngSubmit)="formSubmit()">
+          <formly-form [model]="model" [fields]="fields" [form]="form"></formly-form>
+        </form>
       </div>
-      <button
-        pButton
-        pRipple
-        type="button"
-        label="Submit"
-        class="p-button-raised"
-        (click)="dynamicFormSubmit()"
-        [disabled]="disabled"
-      ></button>
+      <!-- NO DISPLAY -->
     </div>
 
     <div class="right-div">

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { FormGroup } from '@angular/forms';
+import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 
 import { MenuItem } from 'primeng/api';
 import { Message } from 'primeng/api';
@@ -24,7 +26,12 @@ export class DashboardComponent {
   allProcesses: any = undefined;
   selectedProcess: any;
   disabled: boolean = true;
-  processVariablesJSON: any[] = [];
+
+  form = new FormGroup({});
+  model: any = {};
+  options: FormlyFormOptions = {};
+  fields: FormlyFieldConfig[] = [];
+
   processInstanceId: any = undefined;
   processHistory: any = {};
   processHistoryKeys: any[] = [];
@@ -79,7 +86,7 @@ export class DashboardComponent {
       this.disabled = false;
     } else {
       this.processDefinitionSvg = undefined;
-      this.processVariablesJSON = [];
+      this.fields = [];
       this.disabled = true;
     }
   }
@@ -147,48 +154,39 @@ export class DashboardComponent {
 
   renderprocessVariables(varArr: any) {
     varArr.forEach((v: any) => {
-      this.processVariablesJSON.push({
-        type: 'text',
-        name: camelCase(v),
-        label: startCase(v),
-        value: ''
+      this.fields.push({
+        key: camelCase(v),
+        type: 'inputComponent',
+        props: {
+          placeholder: startCase(v),
+          required: false
+        },
       });
     });
   }
 
-  dynamicFormOnChange(event: any) {
-    this.processVariablesJSON.forEach((v: any) => {
-      if (v.name === event.target.name) {
-        v.value = event.target.value;
-      }
-    });
-  }
+  formSubmit() {
+    if (this.form.valid) {
+      this.clear();
 
-  dynamicFormSubmit() {
-    this.clear();
-    let reqBody: any = {};
-    
-    this.processVariablesJSON.forEach((v: any) => {
-      reqBody[v.name] = v.value;
-    });
-
-    this.processService.startNewProcessInstance(
-      this.selectedContainer?.['container-id'],
-      this.selectedProcess?.['process-id'],
-      reqBody
-      ).subscribe({
-      next: (res) => {
-        if (res.status === 201) {
-          this.processInstanceId = res.body;
-          this.showSuccessMessage(res.body);
-          this.getProcessHistory();
-          this.getProcessInstanceDiagram();
+      this.processService.startNewProcessInstance(
+        this.selectedContainer?.['container-id'],
+        this.selectedProcess?.['process-id'],
+        this.model
+        ).subscribe({
+        next: (res) => {
+          if (res.status === 201) {
+            this.processInstanceId = res.body;
+            this.showSuccessMessage(res.body);
+            this.getProcessHistory();
+            this.getProcessInstanceDiagram();
+          }
+        },
+        error: (err) => {
+          this.showErrorMessage();
         }
-      },
-      error: (err) => {
-        this.showErrorMessage();
-      }
-    });
+      });
+    }
   }
 
   getProcessHistory() {

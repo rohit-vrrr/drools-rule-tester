@@ -56,10 +56,16 @@
             .form {
                 .form-fields {
                     margin: 15px 0 0 0;
-                    input {
+                    .btn-container {
                         width: 100%;
+                        display: flex;
+                        align-items: baseline;
+                        justify-content: space-between;
                     }
                 }
+            }
+            .form-display-none {
+                display: none;
             }
 
             .p-button-raised {
